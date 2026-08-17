@@ -259,6 +259,7 @@
   var MAPA_APB = { '2100': 'PF APB', '1708': '1708', '2631': '1162', '3208': '3208',
                    '3280': '3280', '5952': '5952', '8045': '8045' };
   var CLASSES_IGNORADAS = ['4', '0', '1000']; // ISS (4), 0000 e 1000: não vêm na guia, não são checadas
+  var ALIAS_ESTAB = { '51': 1 }; // estabelecimento 51 é tratado como empresa 1 (S/A A Gazeta)
   function parsePlanAPB(texto) {
     var linhas = texto.split(/\r?\n/);
     if (linhas.length < 2) return { erro: 'CSV vazio' };
@@ -280,8 +281,10 @@
       if (cols.length <= idxValor) continue;
       var cls = String(cols[idxCls]).trim();
       var clsNorm = cls.replace(/^0+(?=\d)/, ''); // p/ comparar com '4'
-      var estab = parseInt(cols[idxEstab], 10);
+      var estabRaw = String(cols[idxEstab]).trim();
+      var estab = parseInt(estabRaw, 10);
       if (!cls || isNaN(estab)) continue;
+      if (ALIAS_ESTAB[estabRaw] !== undefined) estab = ALIAS_ESTAB[estabRaw]; // ex.: 51 -> 1 (S/A)
       if (CLASSES_IGNORADAS.indexOf(clsNorm) >= 0) continue; // fora da checagem
       var v = parseBR(cols[idxValor]);
       qtd++;
