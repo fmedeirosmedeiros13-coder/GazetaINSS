@@ -799,11 +799,16 @@
         var linhas = [];
         var cls;
         for (cls in MAPA_APB) {
-          var vAPB = dadosAPB && dadosAPB[cls] !== undefined ? dadosAPB[cls] : 0;
           var rotulo = MAPA_APB[cls];
-          var vGuia;
-          if (cls === '2100') vGuia = g ? (g.codigos['1099'] || 0) : 0; // PF APB x 1099 da guia
-          else vGuia = g ? (g.codigos[rotulo] || 0) : 0;
+          var vAPB, vGuia;
+          if (cls === '2100') {
+            // Sistema = PF APB real (INSS PF do fornec-ems5, já no campo pfApb), NÃO a classe 2100 do plan-apb
+            vAPB = g && g.pfApb ? g.pfApb : 0;
+            vGuia = g ? (g.codigos['1099'] || 0) : 0; // comparado ao código 1099 da guia
+          } else {
+            vAPB = dadosAPB && dadosAPB[cls] !== undefined ? dadosAPB[cls] : 0;
+            vGuia = g ? (g.codigos[rotulo] || 0) : 0;
+          }
           if (vAPB === 0 && vGuia === 0) continue;
           var dif = round2(vGuia - vAPB);
           linhas.push({ cls: cls, rotulo: cls === '2100' ? 'PF APB (x cód. 1099)' : 'Cód. ' + rotulo,
