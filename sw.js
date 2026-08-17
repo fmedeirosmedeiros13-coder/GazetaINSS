@@ -1,4 +1,4 @@
-var CACHE = 'gazetainss-v1';
+var CACHE = 'gazetainss-v19';
 var BASE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', function(ev) {
