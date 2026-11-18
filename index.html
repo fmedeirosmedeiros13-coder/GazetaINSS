@@ -88,7 +88,7 @@
   ];
 
   // Códigos retidos que NÃO compõem o INSS s/ Folha (lançados por outras vias no APB)
-  var CODIGOS_RETENCAO = ['1099', '0588', '1708', '3280', '3208', '5952', '8045', '1162'];
+  var CODIGOS_RETENCAO = ['1099', '0588', '1708', '3280', '3208', '5952', '5960', '5979', '8045', '1162'];
   var COD_IRRF_FOLHA = '0561';
   var COD_DESONERACAO = '2991';
 
@@ -257,7 +257,7 @@
   /* ============ PARSER DO CSV PLAN-APB (checagem de impostos) ============ */
   // Mapeamento Classificação Imposto (APB) -> código na guia
   var MAPA_APB = { '2100': 'PF APB', '1708': '1708', '2631': '1162', '3208': '3208',
-                   '3280': '3280', '5952': '5952', '8045': '8045' };
+                   '3280': '3280', '5952': '5952', '5960': '5960', '5979': '5979', '8045': '8045' };
   var CLASSES_IGNORADAS = ['4', '0', '1000']; // ISS (4), 0000 e 1000: não vêm na guia, não são checadas
   var ALIAS_ESTAB = { '51': 1 }; // estabelecimento 51 é tratado como empresa 1 (S/A A Gazeta)
   function parsePlanAPB(texto) {
@@ -854,7 +854,7 @@
         naoMap.length > 0 && e('div', { className: 'card' },
           e('h2', null, 'Classificações não mapeadas (fora da checagem)'),
           e('p', { className: 'muted', style: { marginBottom: 8 } },
-            'Estas classificações não constam no mapeamento (2100, 1708, 2631, 3208, 3280, 5952, 8045) e não são o ISS (4). Me informe o que são para incluí-las.'),
+            'Estas classificações não constam no mapeamento (2100, 1708, 2631, 3208, 3280, 5952, 5960, 5979, 8045) e não são o ISS (4). Me informe o que são para incluí-las.'),
           e('table', { style: { maxWidth: 520 } },
             e('thead', null, e('tr', null, e('th', null, 'Classificação'), e('th', null, 'Estab'), e('th', { className: 'num' }, 'Valor'))),
             e('tbody', null, naoMap.sort().map(function(ch) {
@@ -872,7 +872,7 @@
       e('div', { className: 'card' },
         e('h2', null, 'Checagem de impostos — Sistema (plan-apb.csv) x Guia'),
         e('p', { className: 'muted', style: { marginBottom: 10 } },
-          'Importa o plan-apb.csv do TOTVS e compara, por empresa, os valores no sistema com os da guia. Mapeamento: 2100=PF APB, 1708=1708, 2631=1162, 3208=3208, 3280=3280, 5952=5952, 8045=8045. ISS (4), 0000 e 1000 ficam fora da checagem. A classe 2100 também preenche o PF APB automaticamente.'),
+          'Importa o plan-apb.csv do TOTVS e compara, por empresa, os valores no sistema com os da guia. Mapeamento: 2100=PF APB, 1708=1708, 2631=1162, 3208=3208, 3280=3280, 5952=5952, 5960=5960, 5979=5979, 8045=8045. ISS (4), 0000 e 1000 ficam fora da checagem. A classe 2100 também preenche o PF APB automaticamente.'),
         e('div', { className: 'toolbar' },
           e('button', { className: 'btn', onClick: function() { if (inputRef.current) inputRef.current.click(); } }, 'Selecionar plan-apb.csv'),
           apb && e('span', { className: 'badge ok' }, apb.arquivo + ' — ' + apb.registros + ' registros')
